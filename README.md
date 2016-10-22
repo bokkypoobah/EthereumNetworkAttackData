@@ -11,6 +11,8 @@ Version 1 of the [getETHNetworkAttackTxsV1](https://github.com/bokkypoobah/Ether
 
 The data extracted is 89.2 Mb and has been zipped down to 6.3 Mb zipped in the file [ETHNetworkAttackTxsV1_20161022_1150.zip](https://github.com/bokkypoobah/EthereumNetworkAttackData/blob/master/Version1/ETHNetworkAttackTxsV1_20161022_1150.zip).
 
+You will need to sync [Parity](https://ethcore.io/parity.html) with the tracing mode on. Clear your existing blockchain data if you already have synced it. Then run `parity --tracing on` to sync the new blockchain data with the Parity tracing mode on.
+
 Some sample data follows:
 
     Geth Memory Crash Contract
