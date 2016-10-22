@@ -1,0 +1,97 @@
+#!/usr/bin/perl
+
+# ---------------------------------------------------------------------------------------------------
+# This script retrieves the transaction data relating to the Ethereum network
+# attacks between:
+#    Sep-18-2016 06:04:56 PM +UTC and 
+#    Oct-20-2016 12:27:05 PM +UTC
+#
+# The post related that describes this data can be found at
+#   https://www.bokconsulting.com.au/blog/ethereum-network-attackers-ip-address-is-traceable/
+# and the Reddit post at
+#   https://www.reddit.com/r/ethereum/comments/58hhry/the_ongoing_ethereum_attacks_work_in_progress/
+#
+# Usage:
+#   1. Download this script to getETHNetworkAttackTxsV1 .
+#   2. Install the Perl JSON::Parse module using the following command 
+#      perl -MCPAN -e 'install JSON::Parse' 
+#   3. `chmod 700 getETHNetworkAttackTxsV1`
+#   4. Run `parity` in a window.
+#   5. Then run this script `./getETHNetworkAttackTxsV1` in a separate window.
+#      Append `> filename` to the command above to pipe the output into a file
+#
+# History 
+#   Oct 22 2016 Version 1 Just retrieves all the raw data
+#
+# Enjoy. (c) BokkyPooBah 2016. The MIT licence.
+# ---------------------------------------------------------------------------------------------------
+
+use JSON::Parse 'parse_json';
+use Data::Dumper;
+
+my $PARITYIP = "localhost";
+
+my (%fromBlock, %toBlock) = ({}, {});
+
+my $GETHMEMORYCRASHCONTRACT = "0xb284e6a25d0972f9a92fec45d2075067db2d49b0";
+$fromBlock{$GETHMEMORYCRASHCONTRACT} = 2283397;
+$toBlock{$GETHMEMORYCRASHCONTRACT} = 2301372;
+
+my $SPAMDOSTXCONTRACT = "0xd6a64d7e8c8a94fa5068ca33229d88436a743b14";
+$fromBlock{$SPAMDOSTXCONTRACT } = 2283249;
+$toBlock{$SPAMDOSTXCONTRACT } = 2379641;
+
+my $BLOATSUICIDECONTRACT = "0x6a0a0fc761c612c340a0e98d33b37a75e5268472";
+$fromBlock{$BLOATSUICIDECONTRACT} = 2421490;
+$toBlock{$BLOATSUICIDECONTRACT} = 2435148;
+
+my $BLOATCREATECONTRACT = "0x7c20218efc2e07c8fe2532ff860d4a5d8287cb31";
+$fromBlock{$BLOATCREATECONTRACT} = 2423558;
+$toBlock{$BLOATCREATECONTRACT}  = 2463130;
+
+my $SECONDWAVEFIRSTCONTRACT = "0xbd37ee00e47c0fe0def80bd95c498698b4a15235";
+$fromBlock{$SECONDWAVEFIRSTCONTRACT} = 2468209;
+$toBlock{$SECONDWAVEFIRSTCONTRACT} = 2468823;
+
+my $SECONDWAVESECONDCONTRACT = "0xb6389d6575966f946e190b9d538c3259857ed2c7";
+$fromBlock{$SECONDWAVESECONDCONTRACT} = 2468662;
+$toBlock{$SECONDWAVESECONDCONTRACT} = 2474792;
+
+
+print "Geth Memory Crash Contract\n";
+my $perl = getData($GETHMEMORYCRASHCONTRACT);
+print Dumper($perl);
+
+print "Spam DoS Tx Contract\n";
+my $perl = getData($SPAMDOSTXCONTRACT);
+print Dumper($perl);
+
+print "Bloat Suicide Contract\n";
+my $perl = getData($BLOATSUICIDECONTRACT);
+print Dumper($perl);
+
+print "Bloat Create Contract\n";
+my $perl = getData($BLOATCREATECONTRACT);
+print Dumper($perl);
+
+print "Second Wave First Contract\n";
+my $perl = getData($SECONDWAVEFIRSTCONTRACT);
+print Dumper($perl);
+
+print "Second Wave Second Contract\n";
+my $perl = getData($SECONDWAVESECONDCONTRACT);
+print Dumper($perl);
+
+
+sub getData {
+  my ($contractAddress) = @_;
+  my $from = $fromBlock{$contractAddress};
+  my $to = $toBlock{$contractAddress};
+
+  my $cmd = "curl $PARITYIP:8545 -X POST --header 'Content-type: application/json' --data '{\"jsonrpc\":\"2.0\", \"method\":\"trace_filter\", \"params\":[{\"fromBlock\": \"$from\", \"toBlock\": \"$to\", \"toAddress\": [\"$contractAddress\"]}], \"id\": \"1\"}'";
+
+  print $cmd . "\n";
+  my $json = `$cmd`;
+  my $perl = parse_json($json);
+  return $perl;
+}
