@@ -1,4 +1,4 @@
-# EthereumNetworkAttackData
+# Ethereum Network Attack Data
 Data relating to the Ethereum network attacks between Sep 18 2016 and Oct 20 2016
 
 The post that describes this data can be found at
