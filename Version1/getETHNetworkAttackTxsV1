@@ -11,6 +11,10 @@
 # and the Reddit post at
 #   https://www.reddit.com/r/ethereum/comments/58hhry/the_ongoing_ethereum_attacks_work_in_progress/
 #
+# You will need to sync Parity with the tracing mode on. Clear your existing blockchain data if
+# you already have synced it. Then run `parity --tracing on` to sync the new blockchain data with
+# the Parity tracing mode on.
+#
 # Usage:
 #   1. Download this script to getETHNetworkAttackTxsV1 .
 #   2. Install the Perl JSON::Parse module using the following command 
