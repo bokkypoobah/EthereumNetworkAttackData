@@ -36,7 +36,7 @@ Some sample data follows:
                               'transactionHash' => '0x403b4bf619ab760a5d88a73a87fb12606f150328075d9795ef34f5157525b887',
                               ...
 
-The data will be parsed into a more useable form in the following days and be made available here.
+The data will be parsed into a more useable form in the following weeks and be made available here.
 
 
 
